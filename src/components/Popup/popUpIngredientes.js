@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Dialog, DialogTitle, DialogContent, InputAdornment, OutlinedInput, Typography, FormLabel } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Select, MenuItem, Typography, FormLabel, TextField } from '@mui/material';
 import Iconify from '../../components/Icon/Iconify';
 import { DataGrid, ptBR } from '@mui/x-data-grid';
 import Close from "../../components/Button/close";
@@ -17,13 +17,12 @@ export const PopupIngredientes = (props) => {
   const { openPopupIngredientes, setOpenPopupIngredientes, addItemToRecipe, verifyIndex, setErrorProp } = props;
   const [isLoading, setIsLoading] = useState(true);
   const [ingredientes, setIngredientes] = useState([]);
+  const [contact, setContact] = useState({ personId: "", type: "", sequence: "", value: "" })
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const [selectionModel, setSelectionModel] = useState([]);
   const [busca, setBusca] = useState('');
   const [error, setError] = useState("");
   const lowerBusca = busca.toLowerCase();
-
-  const ingredientesFiltrados = Array.isArray(ingredientes) ? ingredientes.filter((ingrediente) => ingrediente.description.toLowerCase().includes(lowerBusca)) : []
 
   useEffect(() => {
 
@@ -83,7 +82,7 @@ export const PopupIngredientes = (props) => {
     }
 
     setError("");
-    addItemToRecipe(ingredientesFiltrados.filter((ingrediente) => ingrediente.id === selectionModel));
+    addItemToRecipe(ingredientes.filter((ingrediente) => ingrediente.id === selectionModel));
     setOpenPopupIngredientes(false);
   }
 
@@ -116,7 +115,7 @@ export const PopupIngredientes = (props) => {
           <DialogTitle>
             <div style={{ display: 'flex' }}>
               <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-                Ingredientes
+                Contatos
               </Typography>
               <Close
                 onClick={() => fechar()}><Iconify icon="fa:close" />
@@ -124,31 +123,18 @@ export const PopupIngredientes = (props) => {
             </div>
           </DialogTitle>
           <DialogContent >
-            <OutlinedInput
-              fullWidth
-              placeholder="Pesquisar ingredientes..."
-              style={{
-                marginBottom: '20px'
-              }}
-              value={busca}
-              onChange={(ev) => setBusca(ev.target.value)}
-              startAdornment={
-                <InputAdornment position="start">
-                  <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
-                </InputAdornment>
-              } />
-
-            <DataGrid style={{ height: 450, width: 550 }}
-              localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-              checkboxSelection
-              rows={ingredientesFiltrados}
-              columns={columns}
-              pageSize={6}
-              rowsPerPageOptions={[6]}
-              loading={isLoading}
-              selectionModel={selectionModel}
-              onSelectionModelChange={handleSelection}
-            />
+            <FormLabel sx={{ marginLeft: 2 }}>Contato:</FormLabel>
+            <Select id="contactSelect" size="small" sx={{ width: 140, marginLeft: 2 }} value={contact.type}
+              onChange={e => setContact({ ...contact, type: e.target.value })}>
+              <MenuItem key={0} value={0}>Telefone</MenuItem>
+              <MenuItem key={1} value={1}>E-mail</MenuItem>
+              <MenuItem key={2} value={2}>WhatsApp</MenuItem>
+            </Select>
+            <FormLabel sx={{ marginLeft: 2 }}>Valor:</FormLabel>
+            <TextField size="small" sx={{ width: 120, marginLeft: 2 }}
+              value={contact.value}
+              onChange={e => setContact({ ...contact, value: e.target.value })}>
+            </TextField>
             <Accept variant="contained" type="button" style={{ marginTop: '3vh', marginBottom: '4vh', height: '5vh' }}
               onClick={() => confirmaSelecao()}>
               <Iconify icon="line-md:confirm" sx={{ width: 25, height: 25 }} />

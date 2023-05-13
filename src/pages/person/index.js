@@ -23,7 +23,7 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
   },
 }));
 
-export default function Receitas() {
+const Person = () => {
 
   const [receitas, setReceitas] = React.useState([]);
   const [receita, setReceita] = React.useState({ id: "", description: "", version: "" });
@@ -35,7 +35,7 @@ export default function Receitas() {
   const [busca, setBusca] = React.useState('');
   const lowerBusca = busca.toLowerCase();
 
-  const receitasFiltradas = Array.isArray(receitas) ? receitas.filter((receita) => receita.description.toLowerCase().includes(lowerBusca)) : []
+  const receitasFiltradas = Array.isArray(receitas) ? receitas.filter((receita) => receita.name.toLowerCase().includes(lowerBusca)) : []
 
   React.useEffect(() => {
     fetchData();
@@ -47,12 +47,12 @@ export default function Receitas() {
     const requestInfo = {
       method: 'GET',
       headers: new Headers({
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Content-Type': 'application/json'/*,
+        'Authorization': `Bearer ${token}`*/
       }),
     };
 
-    fetch(process.env.REACT_APP_BASE_URL + "/recipes", requestInfo)
+    fetch(process.env.REACT_APP_BASE_URL + "/person", requestInfo)
       .then(resposta => {
         if (resposta.status === 401) {
           setOpenPopupToken(true);
@@ -60,7 +60,10 @@ export default function Receitas() {
         setLoading(false);
         return resposta.json();
       })
-      .then((json) => setReceitas(json))
+      .then((json) => {
+        setReceitas(json);
+         console.log(json)
+        })
       .catch((error) => console.log(error));
   }
 
@@ -77,9 +80,8 @@ export default function Receitas() {
   };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'description', headerName: 'Descrição', width: 280 },
-    { field: 'version', headerName: 'Versão', width: 130 },
+    { field: 'name', headerName: 'Nome', width: 230 },
+    { field: 'lastName', headerName: 'Sobrenome', width: 130 },
     {
       field: 'status', headerName: 'Status', width: 130,
       renderCell: () =>
@@ -105,12 +107,12 @@ export default function Receitas() {
       <div style={{ height: '60%', width: '45%', marginLeft: '27%' }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} marginTop="30px">
           <Typography variant="h4" gutterBottom>
-            Receitas
+            Pessoas
           </Typography>
           <Accept onClick={() => { abrirPopupReceita() }} startIcon={<Iconify icon="eva:plus-fill" />}>Adicionar</Accept>
         </Stack>
 
-        <SearchStyle placeholder="Pesquisar Receitas..."
+        <SearchStyle placeholder="Pesquisar Pessoas..."
           style={{
             marginBottom: '20px',
             marginTop: '-30px',
@@ -159,3 +161,5 @@ export default function Receitas() {
     </div>
   );
 }
+
+export default Person;

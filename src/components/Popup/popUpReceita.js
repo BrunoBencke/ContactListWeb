@@ -17,7 +17,6 @@ export const PopupReceita = (props) => {
 
     const [openPopupIngredientes, setOpenPopupIngredientes] = React.useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [filtro, setFiltro] = React.useState(1);
     const [ingredients, setIngredients] = useState([]);
     const [removeItens, setRemoveItens] = useState([]);
     const [error, setError] = useState("");
@@ -26,7 +25,7 @@ export const PopupReceita = (props) => {
 
         if (!openPopupReceita) {
             setIsLoading(true);
-            setReceita({ id: "", description: "", version: "" });
+            setReceita({ name: "", lastName: "" });
             setIngredients([]);
             setError("");
             return;
@@ -39,13 +38,13 @@ export const PopupReceita = (props) => {
             const requestInfo = {
                 method: 'POST',
                 headers: new Headers({
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'/*,
+                    'Authorization': `Bearer ${token}`*/
                 }),
                 body: JSON.stringify(receita)
             };
 
-            fetch(process.env.REACT_APP_BASE_URL + "/recipeIngredients/" + receita.id, requestInfo)
+            fetch(process.env.REACT_APP_BASE_URL + "/contact/" + receita.id, requestInfo)
                 .then(response => {
                     if (response.status === 401) {
                         setOpenPopupToken(true);
@@ -58,7 +57,7 @@ export const PopupReceita = (props) => {
                 })
                 .catch((error) => console.log(error));
 
-            setFiltro(receita.version);
+            //setContact(ingredients[0]);
 
         } else {
             setReceita({ id: '', description: '', version: '' })
@@ -92,7 +91,7 @@ export const PopupReceita = (props) => {
                 })
                 .then((json) => {
                     setIngredients(json);
-                    setFiltro(version);
+                    //setContact(version);
                     setIsLoading(false);
                 })
                 .catch((error) => console.log(error));
@@ -279,7 +278,7 @@ export const PopupReceita = (props) => {
                         <DialogTitle>
                             <div style={{ display: 'flex' }}>
                                 <Typography variant="h6" component="div" style={{ flexGrow: 1, width: 550 }}>
-                                    Receita
+                                    Pessoa
                                 </Typography>
                                 <Close
                                     onClick={() => fechar()}><Iconify icon="fa:close" />
@@ -288,23 +287,13 @@ export const PopupReceita = (props) => {
                         </DialogTitle>
                         <DialogContent>
                             <Grid container sx={{ alignItems: "center" }}>
-                                <FormLabel>Código:</FormLabel>
-                                <TextField disabled size="small" sx={{ width: 50, marginLeft: 2 }} value={receita.id}></TextField>
-                                <FormLabel sx={{ marginLeft: 2 }}>Receita:</FormLabel>
-                                <TextField size="small" sx={{ marginLeft: 2 }}
-                                    value={receita.description}
+                                <FormLabel>Nome:</FormLabel>
+                                <TextField disabled size="small" sx={{ width: 120, marginLeft: 2 }} value={receita.name}></TextField>
+                                <FormLabel sx={{ marginLeft: 2 }}>Sobrenome:</FormLabel>
+                                <TextField size="small" sx={{ width: 120, marginLeft: 2 }}
+                                    value={receita.lastName}
                                     onChange={description => editarReceita(description.target.value)}>
                                 </TextField>
-                                <FormLabel sx={{ marginLeft: 2 }}>Versão:</FormLabel>
-                                {isLoading ?
-                                    (
-                                        <Select id="versionLoading" size="small" sx={{ width: 70, marginLeft: 2 }} value={""} />
-                                    ) : (
-                                        <Select id="version" size="small" sx={{ width: 70, marginLeft: 2 }} value={filtro}
-                                            onChange={e => { filtrar(e.target.value) }}>
-                                            {[...Array(receita.version)].map((e, i) => menuItem(i + 1))}
-                                        </Select>
-                                    )}
                             </Grid>
                             <ContainerGrid>
                                 <Grid container spacing={1} sx={{ justifyContent: "space-between", marginTop: "10px" }}>
@@ -313,7 +302,7 @@ export const PopupReceita = (props) => {
                                         startIcon={
                                             <Iconify icon="material-symbols:add-box-outline" />
                                         }>
-                                        Adicionar Ingrediente
+                                        Adicionar Contato
                                     </AddButton>
                                     <RemoveButton
                                         onClick={() => {
@@ -323,7 +312,7 @@ export const PopupReceita = (props) => {
                                             <Iconify icon="material-symbols:playlist-remove-rounded" />
                                         }
                                     >
-                                        Remover Ingrediente
+                                        Remover Contato
                                     </RemoveButton>
                                 </Grid>
                                 {isLoading ? (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../pages/Signin/styles.css';
+import './styles.css';
 import Logo from '../../components/Imagens/splash.png';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
