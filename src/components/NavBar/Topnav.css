@@ -1,0 +1,27 @@
+.topnav{
+    height: 80px;
+    width: 100%;
+    background-color: rgb(112, 123, 124);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.menuicon{
+    font-size: 32px;
+    transition: all 0.5s ease-in-out;
+    transform: scale(1,1);
+}
+
+.menuicon:hover{
+    size: 200;
+    transform: scale(1.5,1.5);
+}
+
+.button{
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;      
+    color: white;
+}
