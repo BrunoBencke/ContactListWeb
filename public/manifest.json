@@ -1,6 +1,6 @@
 {
-    "short_name": "WebRecipes",
-    "name": "Sistema de gestão de receitas",
+    "short_name": "contactList",
+    "name": "Sistema para gestão de contatos.",
     "icons": [
       {
         "src": "favicon.ico",

@@ -1,28 +1,19 @@
 import * as React from 'react';
-import Logo from '../../components/Imagens/marca.png';
+import Logo from '../../components/Imagens/home.png';
 import * as C from './styles';
 import Topnav from '../../components/NavBar/Topnav';
 import { Stack, Typography } from '@mui/material';
 import GraficoVendas from '../../components/Dashboard/graficoVendas';
 
 const Home = () => {
-
   return (
-    <div className="Home">
-      <Topnav />
-      <C.Content>
-        <Stack spacing={1} sx={{ mb: -10 }}>
-          <Typography variant="h6" color="inherit">
-            Faturamento
-          </Typography>
-        </Stack>
-        <GraficoVendas />
-      </C.Content>
+    <div>
+      <Topnav/>
       <C.Content>
         <img
           src={Logo}
           width={1000}
-          height={200}
+          height={1000}
           alt="Logo"
         />
       </C.Content>

@@ -3,9 +3,9 @@ import { styled } from '@mui/material/styles';
 
 const Accept = styled(Button)(({ theme }) => ({
   color: '#FFFFFF',
-  backgroundColor: '#99A3A4',
+  backgroundColor: '#1A3D4D',
   '&:hover': {
-    backgroundColor: '#707B7C',
+    backgroundColor: '#5671BB',
     color: '#FFFFFF',
   },
 }));

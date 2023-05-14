@@ -5,9 +5,8 @@ import Accept from "../../components/Button/accept";
 import { DataGrid, ptBR } from '@mui/x-data-grid';
 import { styled } from '@mui/material/styles';
 import { Status } from "../../components/Status/Status";
-import { PopupExcluirReceita } from "../../components/Popup/popUpExcluirReceita";
-import { PopupReceita } from "../../components/Popup/popUpReceita";
-import { PopUpTokenExpirado } from "../../components/Popup/popUpTokenExpirado";
+import { PopupDeletePerson } from "../../components/Popup/popUpDeletePerson";
+import { PopupContact } from "../../components/Popup/popUpContact";
 import { IconButton as ImageButton, OutlinedInput, InputAdornment } from '@mui/material';
 import { Stack, Typography } from '@mui/material';
 
@@ -25,17 +24,16 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 
 const Person = () => {
 
-  const [receitas, setReceitas] = React.useState([]);
-  const [receita, setReceita] = React.useState({ id: "", description: "", version: "" });
+  const [persons, setPersons] = React.useState([]);
+  const [person, setPerson] = React.useState({ Id: "", Name: "", LastName: "" });
   const [loading, setLoading] = React.useState(true);
-  const [openPopupExcluirReceita, setOpenPopupExcluirReceita] = React.useState(false);
-  const [openPopupReceita, setOpenPopupReceita] = React.useState(false);
-  const [receitaExcluir, setReceitaExcluir] = React.useState('');
-  const [openPopupToken, setOpenPopupToken] = React.useState(false);
-  const [busca, setBusca] = React.useState('');
-  const lowerBusca = busca.toLowerCase();
+  const [openPopupDelete, setOpenPopupDelete] = React.useState(false);
+  const [openPopupContact, setOpenPopupContact] = React.useState(false);
+  const [personDelete, setPersonDelete] = React.useState('');
+  const [search, setSearch] = React.useState('');
+  const lowersearch = search.toLowerCase();
 
-  const receitasFiltradas = Array.isArray(receitas) ? receitas.filter((receita) => receita.name.toLowerCase().includes(lowerBusca)) : []
+  const personsFilter = Array.isArray(persons) ? persons.filter((person) => person.Name.toLowerCase().includes(lowersearch)) : []
 
   React.useEffect(() => {
     fetchData();
@@ -54,29 +52,26 @@ const Person = () => {
 
     fetch(process.env.REACT_APP_BASE_URL + "/person", requestInfo)
       .then(resposta => {
-        if (resposta.status === 401) {
-          setOpenPopupToken(true);
-        }
         setLoading(false);
         return resposta.json();
       })
       .then((json) => {
-        setReceitas(json);
-         console.log(json)
+         setPersons(json);
+         console.log(json);
         })
       .catch((error) => console.log(error));
   }
 
-  const abrirPopupExcluirReceita = (params) => {
-    setReceitaExcluir(params);
-    setOpenPopupExcluirReceita(true);
+  const abrirPopupExcluirperson = (params) => {
+    //setpersonExcluir(params);
+    setOpenPopupDelete(true);
   };
 
-  const abrirPopupReceita = (params) => {
+  const HandleOpenPopupContact = (params) => {
     if (params !== undefined) {
-      setReceita(params);
+      setPerson(params);
     }
-    setOpenPopupReceita(true);
+    setOpenPopupContact(true);
   };
 
   const columns = [
@@ -95,8 +90,8 @@ const Person = () => {
       field: 'opcoes', headerName: 'Opções', width: 140,
       renderCell: (params) =>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ImageButton onClick={() => { abrirPopupReceita(params.row); }}><Iconify icon="akar-icons:edit" /></ImageButton>
-          <ImageButton onClick={() => { abrirPopupExcluirReceita(params.row); }}><Iconify icon="ep:delete" /></ImageButton>
+          <ImageButton onClick={() => { openPopupContact(params.row); }}><Iconify icon="akar-icons:edit" /></ImageButton>
+          <ImageButton onClick={() => { abrirPopupExcluirperson(params.row); }}><Iconify icon="ep:delete" /></ImageButton>
         </Stack>
     },
   ];
@@ -109,7 +104,7 @@ const Person = () => {
           <Typography variant="h4" gutterBottom>
             Pessoas
           </Typography>
-          <Accept onClick={() => { abrirPopupReceita() }} startIcon={<Iconify icon="eva:plus-fill" />}>Adicionar</Accept>
+          <Accept onClick={() => { HandleOpenPopupContact() }} startIcon={<Iconify icon="eva:plus-fill" />}>Adicionar</Accept>
         </Stack>
 
         <SearchStyle placeholder="Pesquisar Pessoas..."
@@ -118,8 +113,8 @@ const Person = () => {
             marginTop: '-30px',
             width: '100%'
           }}
-          value={busca}
-          onChange={(ev) => setBusca(ev.target.value)}
+          value={search}
+          onChange={(ev) => setSearch(ev.target.value)}
           startAdornment={
             <InputAdornment position="start">
               <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
@@ -128,35 +123,30 @@ const Person = () => {
 
         <DataGrid
           localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-          rows={receitasFiltradas}
+          rows={personsFilter}
           columns={columns}
           pageSize={20}
           rowsPerPageOptions={[20]}
           loading={loading}
         />
-
-        <PopUpTokenExpirado openPopup={openPopupToken} />
       </div>
       <div>
-        <PopupExcluirReceita
-          openPopupExcluirReceita={openPopupExcluirReceita}
-          setOpenPopupExcluirReceita={setOpenPopupExcluirReceita}
-          receitaExcluir={receitaExcluir}
-          setOpenPopupToken={setOpenPopupToken}
+        <PopupDeletePerson
+          openPopupDelete={openPopupDelete}
+          setOpenPopupDelete={setOpenPopupDelete}
+          personDelete={personDelete}
           fetchData={fetchData}
         >
-        </PopupExcluirReceita>
+        </PopupDeletePerson>
       </div>
       <div>
-        <PopupReceita
-          openPopupReceita={openPopupReceita}
-          setOpenPopupReceita={setOpenPopupReceita}
-          receita={receita}
-          setReceita={setReceita}
-          setOpenPopupToken={setOpenPopupToken}
-          fetchData={fetchData}
-        >
-        </PopupReceita>
+        <PopupContact
+          openPopupContact={openPopupContact}
+          setOpenPopupContact={setOpenPopupContact}
+          person={person}
+          setPerson={setPerson}
+          fetchData={fetchData}>
+        </PopupContact>
       </div>
     </div>
   );

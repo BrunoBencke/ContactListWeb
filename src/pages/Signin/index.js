@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import { TextField, CircularProgress } from '@mui/material';
 import Accept from '../../components/Button/accept';
 
-const Signin = () => {
+const SignIn = () => {
   const { signin } = useAuth();
   const navigate = useNavigate();
 
@@ -92,4 +92,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default SignIn;

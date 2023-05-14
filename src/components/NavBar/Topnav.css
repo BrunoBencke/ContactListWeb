@@ -1,7 +1,7 @@
 .topnav{
     height: 80px;
     width: 100%;
-    background-color: rgb(112, 123, 124);
+    background-color: #1A3D4D;
     color: white;
     display: flex;
     align-items: center;
@@ -23,5 +23,5 @@
     background-color: Transparent;
     background-repeat:no-repeat;
     border: none;      
-    color: white;
+    color: #D1F97B;
 }

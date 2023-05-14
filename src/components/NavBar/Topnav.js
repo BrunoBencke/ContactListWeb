@@ -1,12 +1,24 @@
 import './Topnav.css';
-import { IoHome, IoPerson, IoReaderOutline, IoExit } from "react-icons/io5";
+import { MdOutlineHome, MdPersonOutline, MdOutlineExitToApp } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import { Tooltip } from '@mui/material';
+import { Tooltip } from "@mui/material";
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles((theme) => ({
+    customTooltip: {
+      color: "#1A3D4D",
+      backgroundColor: "#D1F97B",
+      fontSize: "1rem",
+      fontWeight: "normal",
+      padding: "8px"
+    },
+  }));
 
 const Topnav = () => {
 
     let navigate  = useNavigate();
+    const classes = useStyles();
 
     const { signout } = useAuth();
 
@@ -15,19 +27,19 @@ const Topnav = () => {
 
     return(
         <div className='topnav'>
-            <Tooltip title="Página Inicial">
+            <Tooltip title="Página Inicial" classes={{ tooltip: classes.customTooltip }}>
                 <button className='button' type="button" onClick={home}>
-                    <IoHome className='menuicon'></IoHome>
+                    <MdOutlineHome className='menuicon'/>
                 </button>
             </Tooltip>
-            <Tooltip title="Pessoas">
+            <Tooltip title="Pessoas" classes={{ tooltip: classes.customTooltip }}>
                 <button className='button' type="button" onClick={person}>
-                    <IoPerson className='menuicon'/>
+                    <MdPersonOutline className='menuicon'/>
                 </button>
             </Tooltip>
-            <Tooltip title="Sair">
+            <Tooltip title="Sair" classes={{ tooltip: classes.customTooltip }}>
                 <button className='button' type="button" onClick={signout}>
-                    <IoExit className='menuicon'/>
+                    <MdOutlineExitToApp className='menuicon'/>
                 </button>
             </Tooltip>
         </div>
