@@ -37,6 +37,7 @@ export const PopupContact = (props) => {
     { id: '', personId: '', type: '', value: '' },
   ]);
   const [removeItens, setRemoveItens] = useState([]);
+  const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState('');
 
   const RemoveButton = styled(Button)(() => ({
@@ -60,6 +61,7 @@ export const PopupContact = (props) => {
   useEffect(() => {
     if (!openPopupContact) {
       setIsLoading(true);
+      setEditMode(false);
       setPerson({ id: '', name: '', lastName: '' });
       setContacts([]);
       setError('');
@@ -67,6 +69,8 @@ export const PopupContact = (props) => {
     }
 
     if (person.id !== '') {
+      setEditMode(true);
+
       const requestInfo = {
         method: 'GET',
         headers: new Headers({
@@ -89,7 +93,7 @@ export const PopupContact = (props) => {
 
       //setContacts(contacts[0]);
     } else {
-      setPerson({ id: uuidv4(), Name: '', LastName: '' });
+      setPerson({ id: uuidv4(), name: '', lastName: '' });
       setContacts([]);
       setIsLoading(false);
     }
@@ -118,6 +122,7 @@ export const PopupContact = (props) => {
   }
 
   function verifyIndex(type) {
+    // eslint-disable-next-line eqeqeq
     const obj = contacts.filter((x) => x.type == type);
 
     const lenght = obj.length;
@@ -142,7 +147,7 @@ export const PopupContact = (props) => {
   }
 
   function mapItens() {
-    if (contacts[0] != undefined) {
+    if (contacts[0] !== undefined) {
       return (
         <ContainerGrid>
           <CardLine>
@@ -181,9 +186,9 @@ export const PopupContact = (props) => {
     setPerson({ ...person, lastName: value });
   }
 
-  const atualizarperson = () => {
+  const updatePerson = () => {
     if (contacts.length === 0) {
-      setError('Psiu, adicione um contato!');
+      setError('É necessário adicionar um contato.');
       return;
     }
 
@@ -192,24 +197,46 @@ export const PopupContact = (props) => {
       return;
     }
 
-    const requestInfo = {
-      method: 'POST',
-      headers: new Headers({
-        'Content-type': 'application/json',
-      }),
-      body: JSON.stringify({ person, contacts }),
-    };
+    if (editMode) {
+      const requestInfo = {
+        method: 'PUT',
+        headers: new Headers({
+          'Content-type': 'application/json',
+        }),
+        body: JSON.stringify({ person, contacts }),
+      };
 
-    fetch(process.env.REACT_APP_BASE_URL + '/Person', requestInfo).then(
-      (response) => {
+      fetch(
+        process.env.REACT_APP_BASE_URL + '/Person/' + person.id,
+        requestInfo
+      ).then((response) => {
         if (response.ok) {
           fetchData();
           setOpenPopupContact(false);
         } else {
           alert('Não foi possível inserir pessoa!');
         }
-      }
-    );
+      });
+    } else {
+      const requestInfo = {
+        method: 'POST',
+        headers: new Headers({
+          'Content-type': 'application/json',
+        }),
+        body: JSON.stringify({ person, contacts }),
+      };
+
+      fetch(process.env.REACT_APP_BASE_URL + '/Person', requestInfo).then(
+        (response) => {
+          if (response.ok) {
+            fetchData();
+            setOpenPopupContact(false);
+          } else {
+            alert('Não foi possível inserir pessoa!');
+          }
+        }
+      );
+    }
   };
 
   return (
@@ -235,7 +262,7 @@ export const PopupContact = (props) => {
             </DialogTitle>
             <DialogContent>
               <Grid container sx={{ alignItems: 'center' }}>
-                <FormLabel>Nome:</FormLabel>
+                <FormLabel>Nome*:</FormLabel>
                 <TextField
                   size="small"
                   sx={{ marginLeft: 2 }}
@@ -291,7 +318,7 @@ export const PopupContact = (props) => {
                 variant="contained"
                 type="button"
                 style={{ marginTop: '2vh', height: '5vh' }}
-                onClick={() => atualizarperson()}
+                onClick={() => updatePerson()}
               >
                 <Iconify
                   icon="line-md:confirm"

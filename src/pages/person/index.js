@@ -69,8 +69,8 @@ const Person = () => {
       .catch((error) => console.log(error));
   }
 
-  const abrirPopupExcluirperson = (params) => {
-    //setpersonExcluir(params);
+  const handleOpenPopupDelete = (params) => {
+    setPersonDelete(params);
     setOpenPopupDelete(true);
   };
 
@@ -109,7 +109,7 @@ const Person = () => {
           </ImageButton>
           <ImageButton
             onClick={() => {
-              abrirPopupExcluirperson(params.row);
+              handleOpenPopupDelete(params.row);
             }}
           >
             <Iconify icon="ep:delete" />

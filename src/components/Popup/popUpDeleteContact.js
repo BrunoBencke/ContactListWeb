@@ -12,14 +12,17 @@ export const PopUpDeleteContact = (props) => {
 
   const [erro, setErro] = React.useState('');
 
-  async function excluirReceita(id) {
+  async function deletePerson() {
     const requestInfo = {
       method: 'DELETE',
       headers: new Headers({
         'Content-Type': 'application/json',
       }),
     };
-    await fetch(process.env.REACT_APP_BASE_URL + '/recipe/' + id, requestInfo)
+    await fetch(
+      process.env.REACT_APP_BASE_URL + '/person/' + personDelete.id,
+      requestInfo
+    )
       .then((resposta) => {
         return resposta.json();
       })
@@ -28,7 +31,7 @@ export const PopUpDeleteContact = (props) => {
           setErro(json.detalhes);
           return;
         }
-        //setOpenPopupExcluirReceita(false);
+        setOpenPopupDelete(false);
         fetchData();
       })
       .catch((error) => console.log(error));
@@ -36,7 +39,7 @@ export const PopUpDeleteContact = (props) => {
 
   const fechar = () => {
     setErro('');
-    //setOpenPopupExcluirReceita(false);
+    setOpenPopupDelete(false);
   };
 
   return (
@@ -50,7 +53,7 @@ export const PopUpDeleteContact = (props) => {
                 component="div"
                 style={{ flexGrow: 1, width: 550 }}
               >
-                Deseja realmente excluir esta receita ?
+                Deseja realmente excluir esta pessoa ?
               </Typography>
               <Close onClick={() => fechar()}>
                 <Iconify icon="fa:close" />
@@ -59,7 +62,7 @@ export const PopUpDeleteContact = (props) => {
           </DialogTitle>
           <DialogContent>
             <Typography variant="body1" component="div">
-              {personDelete?.Name}
+              {personDelete?.name}
             </Typography>
             <C.labelError>{erro}</C.labelError>
             <div>
@@ -67,7 +70,7 @@ export const PopUpDeleteContact = (props) => {
                 variant="contained"
                 type="button"
                 style={{ marginTop: '2vh', height: '5vh' }}
-                onClick={() => excluirReceita(personDelete.id)}
+                onClick={() => deletePerson()}
               >
                 <Iconify
                   icon="line-md:confirm"
