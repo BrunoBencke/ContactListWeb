@@ -214,10 +214,10 @@ export const PopupContact = (props) => {
                         <DialogContent>
                             <Grid container sx={{ alignItems: "center" }}>
                                 <FormLabel>Nome:</FormLabel>
-                                <TextField size="small" sx={{ width: 150, marginLeft: 2 }} value={person.name}
+                                <TextField size="small" sx={{ marginLeft: 2 }} value={person.name}
                                     onChange={description => editName(description.target.value)} />
                                 <FormLabel sx={{ marginLeft: 2 }}>Sobrenome:</FormLabel>
-                                <TextField size="small" sx={{ width: 150, marginLeft: 2 }} value={person.lastName}
+                                <TextField size="small" sx={{ marginLeft: 2 }} value={person.lastName}
                                     onChange={description => editLastName(description.target.value)} />
                             </Grid>
                             <ContainerGrid>

@@ -63,7 +63,7 @@ export default function Card({ data, index }) {
 
   return (
     <CardLine ref={ref} isDragging={isDragging}>
-      <Grid container spacing={1} sx={{ justifyContent: "space-between" }}>
+      <Grid container spacing={1} sx={{ alignItems:"center", justifyContent: "space-between" }}>
         <Grid item xs={2} sx={{ textAlign: "center" }}>
           <Checkbox
             color="default"
