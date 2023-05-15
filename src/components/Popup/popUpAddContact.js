@@ -9,19 +9,19 @@ import { v4 as uuidv4 } from 'uuid';
 export const PopUpAddContact = (props) => {
 
   const { openPopupAddContact, setOpenPopupAddContact, addContact, verifyIndex, person, setErrorProp } = props;
-  const [contact, setContact] = useState({ Id: "", PersonId: "", Type: "", Value: "" })
+  const [contact, setContact] = useState({ id: "", personId: "", type: "", value: "" })
   const [windowSize, setWindowSize] = useState(getWindowSize());
   const [error, setError] = useState("");
 
   useEffect(() => {
 
     if (!openPopupAddContact) {
-        setContact({});
+        setContact({ id: "", personId: "", type: "", value: "" });
         setError("");
         return;
     }
 
-    setContact({ Id: uuidv4(), PersonId: person.Id, Type: "", Value: "" });
+    setContact({ id: uuidv4(), personId: person.id, type: "", value: "" });
 
 }, [openPopupAddContact]);
 
@@ -43,17 +43,17 @@ export const PopUpAddContact = (props) => {
   }
 
   const HandleAddContact = () => {
-    if (contact.Type === "") {
+    if (contact.type === "") {
       setError("Ops, um contato deve ser selecionado.");
       return;
     }
 
-    if (contact.Value === "") {
+    if (contact.value === "") {
       setError("Ops, acho que você esqueceu de colocar o contato.");
       return;
     }
 
-    if (verifyIndex(contact.Type)) {
+    if (verifyIndex(contact.type)) {
       setError("Esta pessoa já possui este contato.");
       return;
     }
@@ -65,7 +65,7 @@ export const PopUpAddContact = (props) => {
 
   const HandleClose = () => {
     setOpenPopupAddContact(false);
-    setContact({ Id: "", PersonId: "", Type: "", Value: "" });
+    setContact({ id: "", personId: "", type: "", value: "" });
     setError("");
   }
 
@@ -87,14 +87,14 @@ export const PopUpAddContact = (props) => {
           <Grid container sx={{ alignItems: "center" }}>
             <FormLabel sx={{ marginLeft: 2 }}>Contato:</FormLabel>
             <Select id="contactSelect" size="small" sx={{ width: 140, marginLeft: 2 }} value={contact.type}
-              onChange={e => setContact({ ...contact, Type: e.target.value })}>
+              onChange={e => setContact({ ...contact, type: e.target.value })}>
               <MenuItem key={0} value={0}>Telefone</MenuItem>
               <MenuItem key={1} value={1}>E-mail</MenuItem>
               <MenuItem key={2} value={2}>WhatsApp</MenuItem>
             </Select>
             <FormLabel sx={{ marginLeft: 2 }}>Valor:</FormLabel>
             <TextField size="small" sx={{ width: 120, marginLeft: 2 }} value={contact.value}
-              onChange={e => setContact({ ...contact, Value: e.target.value })}/>
+              onChange={e => setContact({ ...contact, value: e.target.value })}/>
             </Grid>
             <Accept variant="contained" type="button" style={{ marginTop: '3vh', marginBottom: '4vh', height: '5vh' }}
               onClick={() => HandleAddContact()}>

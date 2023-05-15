@@ -13,13 +13,11 @@ export const PopupDeletePerson = (props) => {
     const [erro, setErro] = React.useState("");  
 
     async function excluirReceita (id) {
-      const token = localStorage.getItem('user_token');
   
       const requestInfo = {
         method: 'DELETE',
         headers: new Headers({
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         }),
       };
       await fetch(process.env.REACT_APP_BASE_URL + "/recipe/" + id, requestInfo)

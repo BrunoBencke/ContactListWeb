@@ -2,8 +2,6 @@ import * as React from 'react';
 import Logo from '../../components/Imagens/home.png';
 import * as C from './styles';
 import Topnav from '../../components/NavBar/Topnav';
-import { Stack, Typography } from '@mui/material';
-import GraficoVendas from '../../components/Dashboard/graficoVendas';
 
 const Home = () => {
   return (
@@ -12,8 +10,8 @@ const Home = () => {
       <C.Content>
         <img
           src={Logo}
-          width={1000}
-          height={1000}
+          width={800}
+          height={800}
           alt="Logo"
         />
       </C.Content>

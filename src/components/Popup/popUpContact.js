@@ -18,36 +18,48 @@ export const PopupContact = (props) => {
 
     const [openPopupAddContact, setOpenPopupAddContact] = React.useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [contacts, setContacts] = useState([]);
+    const [contacts, setContacts] = useState([{ id: "", personId: "", type: "", value: "" }]);
     const [removeItens, setRemoveItens] = useState([]);
     const [error, setError] = useState("");
+
+    const RemoveButton = styled(Button)(() => ({
+        color: "#FF4F4F",
+        backgroundColor: "#FFFFFF",
+        "&:hover": {
+            backgroundColor: "#FFFFFF",
+            color: "#FF0000"
+        }
+    }));
+
+    const AddButton = styled(Button)(() => ({
+        color: "#1A3D4D",
+        backgroundColor: "#FFFFFF",
+        "&:hover": {
+            backgroundColor: "#FFFFFF",
+            color: "#5671BB"
+        }
+    }));
 
     useEffect(() => {
 
         if (!openPopupContact) {
             setIsLoading(true);
-            //setperson({ name: "", lastName: "" });
+            setPerson({ id: "", name: "", lastName: "" });
             setContacts([]);
             setError("");
             return;
         }
 
-        const token = localStorage.getItem('user_token');
-
-        console.log(person)
-
-        if (person.Id !== '') {
+        if (person.id !== '') {
 
             const requestInfo = {
-                method: 'POST',
+                method: 'GET',
                 headers: new Headers({
-                    'Content-Type': 'application/json'/*,
-                    'Authorization': `Bearer ${token}`*/
-                }),
-                body: JSON.stringify(person)
+                    'Content-type': 'application/json'
+                })
             };
 
-            fetch(process.env.REACT_APP_BASE_URL + "/contacts/" + person.Id, requestInfo)
+            fetch(process.env.REACT_APP_BASE_URL + "/Contact/" + person.id, requestInfo)
                 .then(response => {
                     return response.json();
                 })
@@ -60,7 +72,7 @@ export const PopupContact = (props) => {
             //setContacts(contacts[0]);
 
         } else {
-            setPerson({ Id: uuidv4(), Name: '', LastName: '' })
+            setPerson({ id: uuidv4(), Name: '', LastName: '' })
             setContacts([]);
             setIsLoading(false);
         }
@@ -70,7 +82,7 @@ export const PopupContact = (props) => {
         setOpenPopupContact(false);
     }
 
-    const addContact = () => {
+    const handleOpenAddContact = () => {
         setOpenPopupAddContact(true);
     }
 
@@ -84,8 +96,7 @@ export const PopupContact = (props) => {
         );
     }
 
-    function OpenAddContact(obj) {
-        console.log(obj)
+    function addContact(obj) {
         setContacts([...contacts, obj]);
     }
 
@@ -105,7 +116,7 @@ export const PopupContact = (props) => {
     }
 
     function removeItemToDelete(obj) {
-        setRemoveItens(removeItens.filter((x) => x.Id !== obj.Id));
+        setRemoveItens(removeItens.filter((x) => x.id !== obj.id));
     }
 
     function removecontacts() {
@@ -114,7 +125,7 @@ export const PopupContact = (props) => {
     }
 
     function mapItens() {
-        if (contacts.length > 0) {
+        if (contacts[0] != undefined) {
             return (
                 <ContainerGrid>
                     <CardLine>
@@ -135,7 +146,7 @@ export const PopupContact = (props) => {
                     </CardLine>
                     {
                         contacts?.map((contact, index) => (
-                            <Card key={contact.Id} index={index} data={contact} />
+                            <Card key={contact.id} index={index} data={contact} />
                         ))
                     }
                 </ContainerGrid>
@@ -143,37 +154,13 @@ export const PopupContact = (props) => {
         }
     }
 
-    function menuItem(i) {
-        return (
-            <MenuItem key={i} value={i}>{i}</MenuItem>
-        );
-    }
-
     function editName(value) {
-        setPerson({ ...person, Name: value })
+        setPerson({ ...person, name: value })
     }
 
     function editLastName(value) {
-        setPerson({ ...person, LastName: value })
+        setPerson({ ...person, lastName: value })
     }
-
-    const RemoveButton = styled(Button)(() => ({
-        color: "#FF4F4F",
-        backgroundColor: "#FFFFFF",
-        "&:hover": {
-            backgroundColor: "#FFFFFF",
-            color: "#FF0000"
-        }
-    }));
-
-    const AddButton = styled(Button)(() => ({
-        color: "#1A3D4D",
-        backgroundColor: "#FFFFFF",
-        "&:hover": {
-            backgroundColor: "#FFFFFF",
-            color: "#5671BB"
-        }
-    }));
 
     const atualizarperson = () => {
 
@@ -182,56 +169,29 @@ export const PopupContact = (props) => {
             return;
         }
 
-        if (person.Name === "") {
+        if (person.name === "") {
             setError("Adicione um nome para a pessoa.");
             return;
         }
 
-        const token = localStorage.getItem('user_token');
+        const requestInfo = {
+            method: 'POST',
+            headers: new Headers({
+                'Content-type': 'application/json'
+            }),
+            body: JSON.stringify({ person, contacts })
+        };
 
-        if (person.Id !== undefined) {
+        fetch(process.env.REACT_APP_BASE_URL + "/Person", requestInfo)
+            .then(response => {
+                if (response.ok) {
+                    fetchData();
+                    setOpenPopupContact(false);
+                } else {
+                    alert('Não foi possível inserir pessoa!')
+                }
+            })
 
-            const requestInfo = {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json'/*,
-                    'Authorization': `Bearer ${token}`*/
-                }),
-                body: JSON.stringify({ person, contacts })
-            };
-
-            fetch(process.env.REACT_APP_BASE_URL + "/recipeIngredient/" + person?.Id, requestInfo)
-                .then(response => {
-                    if (response.ok) {
-                        fetchData();
-                        setOpenPopupContact(false);
-                    } else {
-                        alert('Não foi possível atualizar a person!')
-                    }
-                })
-        } else {
-
-            const requestInfo = {
-                method: 'POST',
-                headers: new Headers({
-                    'Content-Type': 'application/json'/*,
-                    'Authorization': `Bearer ${token}`*/
-                }),
-                body: JSON.stringify({ person, contacts })
-            };
-
-            console.log(JSON.stringify({ person, contacts }))
-
-            fetch(process.env.REACT_APP_BASE_URL + "/Person", requestInfo)
-                .then(response => {
-                    if (response.ok) {
-                        fetchData();
-                        setOpenPopupContact(false);
-                    } else {
-                        alert('Não foi possível inserir pessoa!')
-                    }
-                })
-        }
     };
 
     return (
@@ -254,16 +214,16 @@ export const PopupContact = (props) => {
                         <DialogContent>
                             <Grid container sx={{ alignItems: "center" }}>
                                 <FormLabel>Nome:</FormLabel>
-                                <TextField size="small" sx={{ width: 150, marginLeft: 2 }} value={person.Name}
-                                onChange={description => editName(description.target.value)} />
+                                <TextField size="small" sx={{ width: 150, marginLeft: 2 }} value={person.name}
+                                    onChange={description => editName(description.target.value)} />
                                 <FormLabel sx={{ marginLeft: 2 }}>Sobrenome:</FormLabel>
-                                <TextField size="small" sx={{ width: 150, marginLeft: 2 }} value={person.LastName}
+                                <TextField size="small" sx={{ width: 150, marginLeft: 2 }} value={person.lastName}
                                     onChange={description => editLastName(description.target.value)} />
                             </Grid>
                             <ContainerGrid>
                                 <Grid container spacing={1} sx={{ justifyContent: "space-between", marginTop: "10px" }}>
                                     <AddButton
-                                        onClick={() => { OpenAddContact() }}
+                                        onClick={() => { handleOpenAddContact() }}
                                         startIcon={
                                             <Iconify icon="material-symbols:add-box-outline" />
                                         }>

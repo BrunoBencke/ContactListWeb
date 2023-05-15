@@ -30,7 +30,8 @@ export const AuthProvider = ({ children }) => {
       }),
     };
 
-    await fetch('https://api.siscontrol.app.br/api' + '/login', requestInfo)
+    //Microservice for login
+    await fetch('https://api.siscontrol.app.br/api/login', requestInfo)
       .then((response) => {
         if (response.ok) {
           return response.json();

@@ -25,7 +25,7 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 const Person = () => {
 
   const [persons, setPersons] = React.useState([]);
-  const [person, setPerson] = React.useState({ Id: "", Name: "", LastName: "" });
+  const [person, setPerson] = React.useState({ id: "", name: "", lastName: "" });
   const [loading, setLoading] = React.useState(true);
   const [openPopupDelete, setOpenPopupDelete] = React.useState(false);
   const [openPopupContact, setOpenPopupContact] = React.useState(false);
@@ -33,20 +33,18 @@ const Person = () => {
   const [search, setSearch] = React.useState('');
   const lowersearch = search.toLowerCase();
 
-  const personsFilter = Array.isArray(persons) ? persons.filter((person) => person.Name.toLowerCase().includes(lowersearch)) : []
+  const personsFilter = Array.isArray(persons) ? persons.filter((person) => person.name.toLowerCase().includes(lowersearch)) : []
 
   React.useEffect(() => {
     fetchData();
   }, []);
 
   async function fetchData() {
-    const token = localStorage.getItem('user_token');
 
     const requestInfo = {
       method: 'GET',
       headers: new Headers({
-        'Content-Type': 'application/json'/*,
-        'Authorization': `Bearer ${token}`*/
+        'Content-Type': 'application/json'
       }),
     };
 
@@ -57,7 +55,6 @@ const Person = () => {
       })
       .then((json) => {
          setPersons(json);
-         console.log(json);
         })
       .catch((error) => console.log(error));
   }
@@ -67,7 +64,7 @@ const Person = () => {
     setOpenPopupDelete(true);
   };
 
-  const HandleOpenPopupContact = (params) => {
+  const handleOpenPopupContact = (params) => {
     if (params !== undefined) {
       setPerson(params);
     }
@@ -90,7 +87,7 @@ const Person = () => {
       field: 'opcoes', headerName: 'Opções', width: 140,
       renderCell: (params) =>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <ImageButton onClick={() => { openPopupContact(params.row); }}><Iconify icon="akar-icons:edit" /></ImageButton>
+          <ImageButton onClick={() => { handleOpenPopupContact(params.row); }}><Iconify icon="akar-icons:edit" /></ImageButton>
           <ImageButton onClick={() => { abrirPopupExcluirperson(params.row); }}><Iconify icon="ep:delete" /></ImageButton>
         </Stack>
     },
@@ -104,7 +101,7 @@ const Person = () => {
           <Typography variant="h4" gutterBottom>
             Pessoas
           </Typography>
-          <Accept onClick={() => { HandleOpenPopupContact() }} startIcon={<Iconify icon="eva:plus-fill" />}>Adicionar</Accept>
+          <Accept onClick={() => { handleOpenPopupContact() }} startIcon={<Iconify icon="eva:plus-fill" />}>Adicionar</Accept>
         </Stack>
 
         <SearchStyle placeholder="Pesquisar Pessoas..."

@@ -14,7 +14,7 @@ export default function Card({ data, index }) {
 
   const [{ isDragging }, dragRef] = useDrag({
     type: "CARD",
-    item: { index, id: data.Id, data: data },
+    item: { index, id: data.id, data: data },
     collect: (monitor) => ({
       isDragging: monitor.isDragging()
     })
@@ -81,7 +81,7 @@ export default function Card({ data, index }) {
           />
         </Grid>
         <Grid item xs={2} sx={{ textAlign: "center" }}>
-          {data.Type === 0 && (
+          {data.type === 0 && (
             <Icon
             icon="mdi:telephone"
             style={{
@@ -89,7 +89,7 @@ export default function Card({ data, index }) {
               marginRight: "15px"
             }} />
           )}
-          {data.Type === 1 && (
+          {data.type === 1 && (
             <Icon
             icon="material-symbols:mail-outline"
             style={{
@@ -97,7 +97,7 @@ export default function Card({ data, index }) {
               marginRight: "15px"
             }} />
           )}
-          {data.Type === 2 && (
+          {data.type === 2 && (
             <Icon
               icon="ic:baseline-whatsapp"
               style={{
@@ -107,7 +107,7 @@ export default function Card({ data, index }) {
           )}
         </Grid>
         <Grid item xs={2} sx={{ textAlign: "left" }}>
-          {data.Value}
+          {data.value}
         </Grid>
       </Grid>
     </CardLine>
