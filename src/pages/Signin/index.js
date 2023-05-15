@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './styles.css';
-import Logo from '../../components/Imagens/splash.png';
+import Logo from '../../components/Images/splash.png';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { TextField, CircularProgress } from '@mui/material';
