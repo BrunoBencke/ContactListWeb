@@ -17,6 +17,8 @@
     background-image: url('../../components/Images/background.png');
     background-size: cover;
     background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
     border-left: 3px solid rgb(195,198,205);
 }
 

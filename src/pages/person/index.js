@@ -122,7 +122,7 @@ const Person = () => {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <Topnav />
-      <div style={{ height: '60%', width: '45%', marginLeft: '27%' }}>
+      <div style={{ height: '45%', width: '35%', marginLeft: '27%' }}>
         <Stack
           direction="row"
           alignItems="center"

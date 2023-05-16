@@ -131,7 +131,7 @@ export const PopUpAddContact = (props) => {
               <FormLabel sx={{ marginLeft: 2 }}>Valor:</FormLabel>
               <TextField
                 size="small"
-                sx={{ width: 120, marginLeft: 2 }}
+                sx={{ width: 160, marginLeft: 2 }}
                 value={contact.value}
                 onChange={(e) =>
                   setContact({ ...contact, value: e.target.value })
